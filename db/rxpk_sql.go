@@ -23,8 +23,8 @@
 package db
 
 import (
-	"github.com/pkg/errors"
 	"github.com/bullettime/lora-coverage/model"
+	"github.com/pkg/errors"
 )
 
 var (

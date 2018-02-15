@@ -67,7 +67,7 @@ func TestRxPk(t *testing.T) {
 				var p RxPacket
 				fieldsJson, err := json.Marshal(m.Fields)
 				if err != nil {
-					t.Error("error marshaling fields to json:", m.Fields, "(", err ,")")
+					t.Error("error marshaling fields to json:", m.Fields, "(", err, ")")
 				}
 				t.Log(string(fieldsJson))
 				json.Unmarshal(fieldsJson, &p)

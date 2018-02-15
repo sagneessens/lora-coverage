@@ -46,13 +46,10 @@ var (
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "lora-coverage",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "A tool to help with creating a coverage map for LoRa networks.",
+	Long: `A tool for the creation of coverage map and the processing of captured data
+from gateways. The captured data can be stored in a database to account for new and old data.
+The database in turn is used to create kml files which represents the coverage areas.`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		var logLevel = log.InfoLevel
 		var logHandlers []log.Handler
@@ -65,7 +62,7 @@ to quickly create a Cobra application.`,
 			logLevel = log.DebugLevel
 		}
 
-		absLogFileLocation, err := filepath.Abs("web.log")
+		absLogFileLocation, err := filepath.Abs("coverage.log")
 		if err != nil {
 			panic(err)
 		}

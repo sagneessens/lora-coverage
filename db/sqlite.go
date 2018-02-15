@@ -49,10 +49,9 @@ func Connect() (*Connection, error) {
 }
 
 func (c *Connection) Init() error {
-	//err := c.initUser()
-	//if err != nil {
-	//	return err
-	//}
+	if err := c.initRxPk(); err != nil {
+		return err
+	}
 
 	return nil
 }

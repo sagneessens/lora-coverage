@@ -25,14 +25,15 @@ package db
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/bullettime/lora-coverage/model"
 	"os"
 	"testing"
+
+	"github.com/bullettime/lora-coverage/model"
 	"github.com/spf13/viper"
 )
 
 var (
-	tearDown  = false
+	tearDown  = true
 	message   logMessage
 	messages  []logMessage
 	rxpackets []model.RxPacket

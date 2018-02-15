@@ -25,10 +25,11 @@ package model
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/pkg/errors"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 type CompactTime time.Time
@@ -125,4 +126,8 @@ func (m *MacAddress) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Wrong mac address size: %v bytes", len(mac)))
 	}
 	return nil
+}
+
+func (m *Model) AddRxPk(p *RxPacket) error {
+	return m.db.AddRxPk(p)
 }
