@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/apex/log"
 	"github.com/brocaar/lorawan"
 	"github.com/spf13/cobra"
@@ -30,7 +31,7 @@ import (
 var (
 	nwkSKey = [16]byte{200, 243, 24, 62, 142, 24, 220, 221, 149, 70, 183, 25, 178, 79, 176, 124}
 	appSKey = [16]byte{53, 225, 222, 151, 84, 90, 143, 185, 215, 10, 186, 32, 243, 199, 190, 181}
-	appKey = [16]byte{228, 251, 27, 233, 86, 88, 213, 168, 184, 166, 7, 93, 169, 105, 117, 121}
+	appKey  = [16]byte{228, 251, 27, 233, 86, 88, 213, 168, 184, 166, 7, 93, 169, 105, 117, 121}
 )
 
 // decodeCmd represents the decode command
@@ -87,7 +88,7 @@ to quickly create a Cobra application.`,
 		}
 
 		log.WithFields(log.Fields{
-			"bytes": fmt.Sprint(pl.Bytes),
+			"bytes":  fmt.Sprint(pl.Bytes),
 			"string": fmt.Sprintf("%s", pl.Bytes),
 		}).Info("frame payload")
 	},

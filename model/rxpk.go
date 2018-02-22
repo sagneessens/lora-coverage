@@ -29,7 +29,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/brocaar/lorawan"
 	"github.com/pkg/errors"
 )
 
@@ -41,10 +40,6 @@ type DataRate struct {
 }
 
 type MacAddress [8]byte
-
-type Payload struct {
-	lorawan.PHYPayload
-}
 
 type RxPacket struct {
 	GatewayMac MacAddress  `json:"gateway mac"`
@@ -61,26 +56,6 @@ type RxPacket struct {
 	Size       uint16      `json:"size"`
 	Data       string      `json:"data"`
 }
-
-//func (p Payload) String() string {
-//	b, err := p.MarshalJSON()
-//	if err != nil {
-//		return ""
-//	}
-//	return string(b)
-//}
-//
-//func (p *Payload) MarshalJSON() ([]byte, error) {
-//	return p.PHYPayload.MarshalJSON()
-//}
-//
-//func (p *Payload) UnmarshalJSON(data []byte) error {
-//	dataStr, err := strconv.Unquote(string(data))
-//	if err != nil {
-//		return err
-//	}
-//	return p.UnmarshalText([]byte(dataStr))
-//}
 
 func (t CompactTime) String() string {
 	return time.Time(t).UTC().Format(time.RFC3339Nano)
@@ -151,8 +126,4 @@ func (m *MacAddress) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Wrong mac address size: %v bytes", len(mac)))
 	}
 	return nil
-}
-
-func (m *Model) AddRxPk(p *RxPacket) error {
-	return m.db.AddRxPk(p)
 }

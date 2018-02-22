@@ -77,12 +77,12 @@ It will only select the rx packets and add this data to a new or the existing da
 				log.WithError(err).WithField("line", string(lineScanner.Bytes())).Error("unmarshalling line")
 			} else {
 				if message.Message == "PUSH_DATA: RXPK" {
-					var packet model.RxPacket
+					var coverage model.Coverage
 
-					if err := json.Unmarshal(message.Fields, &packet); err != nil {
-						log.WithError(err).WithField("fields", string(message.Fields)).Error("unmarshalling fields")
+					if err := coverage.Unmarshal(message.Fields); err != nil {
+						log.WithError(err).WithField("fields", string(message.Fields)).Debug("error unmarshalling fields")
 					} else {
-						myModel.AddRxPk(&packet)
+						myModel.AddCoverageRow(&coverage)
 					}
 				}
 			}

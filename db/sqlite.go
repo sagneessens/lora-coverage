@@ -49,7 +49,7 @@ func Connect() (*Connection, error) {
 }
 
 func (c *Connection) Init() error {
-	if err := c.initRxPk(); err != nil {
+	if err := c.initCoverage(); err != nil {
 		return err
 	}
 

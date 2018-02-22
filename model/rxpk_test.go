@@ -25,9 +25,10 @@ package model
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/brocaar/lorawan"
 	"os"
 	"testing"
+
+	"github.com/brocaar/lorawan"
 )
 
 var (

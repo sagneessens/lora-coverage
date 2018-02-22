@@ -111,6 +111,8 @@ func init() {
 	//RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	viper.SetDefault("database.dbfile", "coverage.db")
+	viper.SetDefault("lora.nwkskey", "C8F3183E8E18DCDD9546B719B24FB07C")
+	viper.SetDefault("lora.appskey", "35E1DE97545A8FB9D70ABA20F3C7BEB5")
 }
 
 // initConfig reads in config file and ENV variables if set.

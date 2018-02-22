@@ -28,42 +28,33 @@ import (
 )
 
 var (
-	createTable = `CREATE TABLE IF NOT EXISTS rxpk(
-gatewaymac BLOB,
+	createCoverageTable = `CREATE TABLE IF NOT EXISTS coverage(
+gateway TEXT,
+device TEXT,
 time TEXT,
 frequency REAL,
-ifchannel BLOB,
-rfchain BLOB,
-crc INTEGER,
-modulation TEXT,
-datarate TEXT,
-codingrate TEXT,
 rssi INTEGER,
 snr REAL,
 size INTEGER,
-data TEXT,
+payload TEXT,
 create_time TEXT DEFAULT CURRENT_TIMESTAMP)`
-	addRxPk = `INSERT INTO rxpk(gatewaymac, time, frequency, ifchannel, rfchain, crc, modulation, datarate, codingrate, 
-rssi, snr, size, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	addCoverageRow = `INSERT INTO coverage(gateway, device, time, frequency, rssi, snr, size, payload) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 )
 
-func (c *Connection) initRxPk() error {
-	_, err := c.database.Exec(createTable)
+func (c *Connection) initCoverage() error {
+	_, err := c.database.Exec(createCoverageTable)
 	if err != nil {
-		return errors.Wrap(err, "error initializing table 'rxpk'")
+		return errors.Wrap(err, "error initializing table 'coverage'")
 	}
 	return nil
 }
 
-func (c *Connection) AddRxPk(p *model.RxPacket) error {
-	//data, err := p.Data.MarshalJSON()
-	//if err != nil {
-	//	return errors.Wrap(err, "error marshalling data to json")
-	//}
-	_, err := c.database.Exec(addRxPk, p.GatewayMac.String(), p.Time.String(), p.Frequency, p.IFChannel, p.RFChain,
-		p.Crc, p.Modulation, p.DataR.String(), p.CodingRate, p.RSSI, p.SNR, p.Size, p.Data)
+func (c *Connection) AddCoverageRow(m *model.Coverage) error {
+	_, err := c.database.Exec(addCoverageRow, m.GatewayMac.String(), m.DeviceAddr.String(), m.Time.String(),
+		m.Frequency, m.RSSI, m.SNR, m.Size, m.Payload)
 	if err != nil {
-		return errors.Wrapf(err, "error adding rxpk: %s", p)
+		return errors.Wrapf(err, "error adding coverage row: %s", m)
 	}
 
 	return nil

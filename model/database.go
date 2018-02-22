@@ -23,7 +23,7 @@
 package model
 
 type db interface {
-	AddRxPk(*RxPacket) error
+	AddCoverageRow(*Coverage) error
 	//AddUser(string, string) error
 	//GetUser(string) (*User, error)
 	//RemoveUser(string) error
