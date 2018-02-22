@@ -27,6 +27,13 @@
 			"revisionTime": "2018-01-18T05:06:19Z"
 		},
 		{
+			"checksumSHA1": "8Z4/BQpaA9AY58MCBnnmqiUSdgg=",
+			"path": "github.com/brocaar/lorawan",
+			"revision": "c2134632a309dd7de391158aeb5c933e9fe48065",
+			"revisionTime": "2018-02-22T08:38:30Z",
+			"tree": true
+		},
+		{
 			"checksumSHA1": "p5z5hdUt68Z3tK7Is+yLGrCNzoA=",
 			"path": "github.com/fatih/color",
 			"revision": "5df930a27be2502f99b292b7cc09ebad4d0891f4",
@@ -109,6 +116,18 @@
 			"path": "github.com/inconshreveable/mousetrap",
 			"revision": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75",
 			"revisionTime": "2014-10-17T20:07:13Z"
+		},
+		{
+			"checksumSHA1": "7PLlrIaGI1TKWB96RkizgkTtOtQ=",
+			"path": "github.com/jacobsa/crypto/cmac",
+			"revision": "c73681c634de898c869684602cf0c0d2ce938c4d",
+			"revisionTime": "2017-10-18T23:08:03Z"
+		},
+		{
+			"checksumSHA1": "NBvtX91AEKxFLmj8mwwhXEKl6d0=",
+			"path": "github.com/jacobsa/crypto/common",
+			"revision": "c73681c634de898c869684602cf0c0d2ce938c4d",
+			"revisionTime": "2017-10-18T23:08:03Z"
 		},
 		{
 			"checksumSHA1": "abKzFXAn0KDr5U+JON1ZgJ2lUtU=",

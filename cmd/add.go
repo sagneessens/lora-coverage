@@ -35,10 +35,10 @@ import (
 var message logMessage
 
 type logMessage struct {
-	Fields    interface{} `json:"fields"`
-	Level     string      `json:"level"`
-	TimeStamp string      `json:"timestamp"`
-	Message   string      `json:"message"`
+	Fields    json.RawMessage `json:"fields"`
+	Level     string          `json:"level"`
+	TimeStamp string          `json:"timestamp"`
+	Message   string          `json:"message"`
 }
 
 // addCmd represents the add command
@@ -79,15 +79,10 @@ It will only select the rx packets and add this data to a new or the existing da
 				if message.Message == "PUSH_DATA: RXPK" {
 					var packet model.RxPacket
 
-					fieldsJson, err := json.Marshal(message.Fields)
-					if err != nil {
-						log.WithError(err).WithField("fields", message.Fields).Error("marshalling fields")
+					if err := json.Unmarshal(message.Fields, &packet); err != nil {
+						log.WithError(err).WithField("fields", string(message.Fields)).Error("unmarshalling fields")
 					} else {
-						if err := json.Unmarshal(fieldsJson, &packet); err != nil {
-							log.WithError(err).WithField("fields", string(fieldsJson)).Error("unmarshalling fields")
-						} else {
-							myModel.AddRxPk(&packet)
-						}
+						myModel.AddRxPk(&packet)
 					}
 				}
 			}
