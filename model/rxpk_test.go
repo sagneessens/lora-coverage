@@ -27,8 +27,6 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
-
-	"github.com/brocaar/lorawan"
 )
 
 var (
@@ -46,7 +44,7 @@ type logMessage struct {
 
 func TestRxPk(t *testing.T) {
 	// setup
-	jsonFile, err := os.Open("../lora2.json")
+	jsonFile, err := os.Open("../test.json")
 	if err != nil {
 		t.Fatal("error opening json testfile:", err)
 	}
@@ -86,20 +84,7 @@ func TestRxPk(t *testing.T) {
 				t.Log("RSSI:", p.RSSI)
 				t.Log("SNR:", p.SNR)
 				t.Log("Size:", p.Size)
-				//t.Log("data:", p.Data)
-				t.Log("MAC Type:", p.Data.MHDR.MType)
-				t.Log("Major:", p.Data.MHDR.Major)
-				switch p.Data.MACPayload.(type) {
-				case *lorawan.MACPayload:
-					t.Log("Device Address:", p.Data.MACPayload.(*lorawan.MACPayload).FHDR.DevAddr)
-					t.Log("Frame Port:", *p.Data.MACPayload.(*lorawan.MACPayload).FPort)
-					if len(p.Data.MACPayload.(*lorawan.MACPayload).FRMPayload) > 0 {
-						t.Log("Payload:", p.Data.MACPayload.(*lorawan.MACPayload).FRMPayload[0].(*lorawan.DataPayload).Bytes)
-					}
-					//switch p.Data.MACPayload.(*lorawan.MACPayload).FRMPayload.(type) {
-					//case *lorawan.DataPayload:
-					//}
-				}
+				t.Log("data:", p.Data)
 			}
 		}
 	})

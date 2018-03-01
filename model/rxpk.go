@@ -49,7 +49,7 @@ type RxPacket struct {
 	RFChain    uint8       `json:"RF chain"`
 	Crc        int8        `json:"crc"`
 	Modulation string      `json:"modulation"`
-	DataR      *DataRate   `json:"data rate"`
+	DataR      DataRate    `json:"data rate"`
 	CodingRate string      `json:"coding rate"`
 	RSSI       int16       `json:"rssi"`
 	SNR        float64     `json:"snr"`
@@ -100,11 +100,7 @@ func (d *DataRate) UnmarshalJSON(data []byte) error {
 }
 
 func (m MacAddress) String() string {
-	b := make([]byte, len(m))
-	for i, v := range m {
-		b[i] = byte(v)
-	}
-	return fmt.Sprintf("%X", b)
+	return hex.EncodeToString(m[:])
 }
 
 func (m MacAddress) MarshalJSON() ([]byte, error) {

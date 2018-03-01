@@ -22,9 +22,9 @@
 
 package model
 
+import "github.com/paulmach/go.geojson"
+
 type db interface {
 	AddCoverageRow(*Coverage) error
-	//AddUser(string, string) error
-	//GetUser(string) (*User, error)
-	//RemoveUser(string) error
+	GetGeoJSonPoints(string, string) ([]*geojson.Feature, error)
 }

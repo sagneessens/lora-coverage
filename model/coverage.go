@@ -23,6 +23,7 @@
 package model
 
 import (
+	"encoding/hex"
 	"encoding/json"
 
 	"github.com/brocaar/lorawan"
@@ -35,17 +36,33 @@ type Coverage struct {
 	DeviceAddr lorawan.DevAddr
 	Time       CompactTime
 	Frequency  float64
+	DataRate   DataRate
+	Power      int8
 	RSSI       int16
 	SNR        float64
 	Size       uint16
 	Payload    string
+	Latitude   float64
+	Longitude  float64
 }
+
+var (
+	InvalidCrcError          = errors.New("invalid crc")
+	InvalidMicError          = errors.New("invalid mic")
+	InvalidMacPayloadError   = errors.New("invalid mac payload")
+	InvalidFramePayloadError = errors.New("invalid frame payload")
+	InvalidPayloadError      = errors.New("invalid payload")
+)
 
 func (c *Coverage) Unmarshal(data []byte) error {
 	var packet RxPacket
 
 	if err := json.Unmarshal(data, &packet); err != nil {
 		return err
+	}
+
+	if packet.Crc < 0 {
+		return InvalidCrcError
 	}
 
 	phyPayload, err := getDecryptedPayload([]byte(packet.Data))
@@ -55,22 +72,37 @@ func (c *Coverage) Unmarshal(data []byte) error {
 
 	macPayload, ok := phyPayload.MACPayload.(*lorawan.MACPayload)
 	if !ok {
-		return errors.New("wrong payload type")
+		return InvalidMacPayloadError
 	}
 
 	payload, ok := macPayload.FRMPayload[0].(*lorawan.DataPayload)
 	if !ok {
-		return errors.New("wrong payload type")
+		return InvalidFramePayloadError
 	}
 
 	c.GatewayMac = packet.GatewayMac
 	c.DeviceAddr = macPayload.FHDR.DevAddr
 	c.Time = packet.Time
 	c.Frequency = packet.Frequency
+	c.DataRate = packet.DataR
 	c.RSSI = packet.RSSI
 	c.SNR = packet.SNR
 	c.Size = packet.Size
-	c.Payload = string(payload.Bytes)
+	c.Payload = hex.EncodeToString(payload.Bytes[:])
+
+	lat, lon, err := getLocation(payload.Bytes[:])
+	if err != nil {
+		return err
+	}
+
+	c.Latitude = lat
+	c.Longitude = lon
+
+	pwr, err := getPower(payload.Bytes[:])
+	c.Power = pwr
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -91,7 +123,7 @@ func getDecryptedPayload(data []byte) (*lorawan.PHYPayload, error) {
 		return nil, err
 	}
 	if !ok {
-		return nil, errors.New("invalid mic")
+		return nil, InvalidMicError
 	}
 
 	var appSKey lorawan.AES128Key
@@ -104,4 +136,35 @@ func getDecryptedPayload(data []byte) (*lorawan.PHYPayload, error) {
 	}
 
 	return &phy, nil
+}
+
+func getLocation(data []byte) (float64, float64, error) {
+	if !isValidPayload(data) {
+		return 0, 0, InvalidPayloadError
+	}
+
+	multiplier := float64(10000)
+
+	latitude := float64(uint32(data[2])|uint32(data[1])<<8|uint32(data[0])<<16) / multiplier
+	longitude := float64(uint32(data[5])|uint32(data[4])<<8|uint32(data[3])<<16) / multiplier
+
+	return latitude, longitude, nil
+}
+
+func getPower(data []byte) (int8, error) {
+	if !isValidPayload(data) || len(data) < 7 {
+		return 127, InvalidPayloadError
+	}
+
+	power := int8(data[6])
+
+	return power, nil
+}
+
+func isValidPayload(data []byte) bool {
+	if len(data) < 6 || len(data) > 7 {
+		return false
+	} else {
+		return true
+	}
 }
