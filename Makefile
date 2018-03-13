@@ -6,7 +6,7 @@ GOARCH ?= amd64
 GOPATH ?= $(HOME)/go/
 BUILD_DATE = `date -u +%Y-%m-%dT%H:%M.%SZ`
 
-all: clean build build-arm
+all: clean build
 
 build:
 	@echo "Compiling source for $(GOOS) $(GOARCH)"

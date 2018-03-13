@@ -27,10 +27,10 @@
 			"revisionTime": "2018-01-18T05:06:19Z"
 		},
 		{
-			"checksumSHA1": "8Z4/BQpaA9AY58MCBnnmqiUSdgg=",
+			"checksumSHA1": "+2BJZTFs1JsAyU6A8mtAykFmdvI=",
 			"path": "github.com/brocaar/lorawan",
-			"revision": "c2134632a309dd7de391158aeb5c933e9fe48065",
-			"revisionTime": "2018-02-22T08:38:30Z",
+			"revision": "f359b50e77d1f421e9201846f425986017ffd851",
+			"revisionTime": "2018-03-13T10:31:58Z",
 			"tree": true
 		},
 		{
